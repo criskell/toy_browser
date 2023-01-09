@@ -42,6 +42,18 @@ pub fn parse(input: String) -> Stylesheet {
     parser.consume_stylesheet()
 }
 
+pub type Specificity = (usize, usize, usize);
+
+impl SimpleSelector {
+    pub fn specificity(&self) -> Specificity {
+        let a = self.id.iter().count();
+        let b = self.classes.len();
+        let c = self.tag_name.iter().count();
+
+        (a, b, c)
+    }
+}
+
 struct Parser {
     input: String,
     cursor: usize,
