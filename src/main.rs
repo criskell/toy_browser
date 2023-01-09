@@ -1,15 +1,25 @@
-use toy_browser::html;
+use toy_browser::css;
 
 fn main() {
-    let tree = html::parse(String::from("<html>
-    <body>
-        <h1>Title</h1>
-        <div id=\"main\" class=\"test\">
-            <p>Hello <em>world</em>!</p>
-        </div>
-    </body>
-</html>
-"));
+    let stylesheet = css::parse("
 
-    println!("{:#?}", tree);
+* {
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: Arial;
+    font-size: 16px;
+}
+
+#foo, abc.bar.k#d, *.f.g.h#k, bfc.#a4fa {
+    font-size: 16px;
+    font-family: Arial;
+}
+
+".to_owned());
+
+    println!("{:#?}", stylesheet);
 }
