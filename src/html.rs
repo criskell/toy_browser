@@ -1,4 +1,4 @@
-use crate::dom::{AttrMap, Node};
+use crate::dom::{AttrMap, Element, Node};
 
 struct HTMLParser {
     input: String,
@@ -71,11 +71,11 @@ impl HTMLParser {
 
         self.advance_by(end_tag.len());
 
-        Node::Element {
+        Node::Element(Element {
             tag_name,
             attributes,
             children,
-        }
+        })
     }
 
     fn consume_attributes(&mut self) -> AttrMap {
@@ -114,9 +114,7 @@ impl HTMLParser {
     }
 
     fn consume_text(&mut self) -> Node {
-        Node::Text {
-            value: self.consume_while(|c| c != '<'),
-        }
+        Node::Text(self.consume_while(|c| c != '<'))
     }
 }
 

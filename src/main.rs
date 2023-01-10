@@ -1,25 +1,42 @@
-use toy_browser::css;
+use toy_browser::{css, html, style};
 
 fn main() {
-    let stylesheet = css::parse("
+    let root = html::parse(
+        "<html>
+    <head>
+        <title>EU SEIIIIIIIIIIIIIII</title>
+    </head>
+    <body>
+        <p id=\"paragraph\" class=\"ff aah bbbb\">OLA A</p>
+    </body>
+</html>"
+        .to_owned(),
+    );
 
-* {
-    box-sizing: border-box;
-    margin: 0px;
-    padding: 0px;
+    let stylesheet = css::parse(
+        "
+head, title {
+    display: none;
 }
 
 body {
-    font-family: Arial;
-    font-size: 16px;
+    width: 500px;
+    height: 500px;
+    display: block;
 }
 
-#foo, abc.bar.k#d, *.f.g.h#k, bfc.#a4fa {
-    font-size: 16px;
-    font-family: Arial;
+p#paragraph.aah.bbbb {
+    propriedade: aaaaaaaaaaaaaaaaaaaaaa;
 }
 
-".to_owned());
+#paragraph.aah.bbbb {
+    propriedade: OLA;
+}
+"
+        .to_owned(),
+    );
 
-    println!("{:#?}", stylesheet);
+    let styled = style::style_node(&root, &stylesheet);
+
+    println!("{:#?}", styled);
 }

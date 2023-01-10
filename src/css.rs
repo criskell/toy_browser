@@ -2,36 +2,36 @@ use std::u8;
 
 #[derive(Debug)]
 pub struct Stylesheet {
-    rules: Vec<Rule>,
+    pub rules: Vec<Rule>,
 }
 
 #[derive(Debug)]
 pub struct Rule {
-    selectors: Vec<SimpleSelector>,
-    declarations: Vec<Declaration>,
+    pub selectors: Vec<SimpleSelector>,
+    pub declarations: Vec<Declaration>,
 }
 
 #[derive(Debug)]
 pub struct SimpleSelector {
-    tag_name: Option<String>,
-    id: Option<String>,
-    classes: Vec<String>,
+    pub tag_name: Option<String>,
+    pub id: Option<String>,
+    pub classes: Vec<String>,
 }
 
 #[derive(Debug)]
 pub struct Declaration {
-    name: String,
-    value: CSSValue,
+    pub name: String,
+    pub value: CSSValue,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum CSSValue {
     Keyword(String),
     Length(f32, CSSUnit),
     Color { r: u8, g: u8, b: u8, a: u8 },
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum CSSUnit {
     Px,
 }
@@ -98,6 +98,8 @@ impl Parser {
             }
         }
 
+        selectors.sort_by(|a, b| a.specificity().cmp(&b.specificity()));
+
         selectors
     }
 
@@ -113,14 +115,14 @@ impl Parser {
                 '.' => {
                     self.consume_char();
                     selector.classes.push(self.consume_word());
-                },
+                }
                 '#' => {
                     self.consume_char();
                     selector.id = Some(self.consume_word());
-                },
+                }
                 '*' => {
                     self.consume_char();
-                },
+                }
                 _ => {
                     selector.tag_name = Some(self.consume_word());
                 }
