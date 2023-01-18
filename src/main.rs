@@ -1,4 +1,4 @@
-use toy_browser::{css, html, style};
+use toy_browser::{css, html, style, layout};
 
 fn main() {
     let root = html::parse(
@@ -38,5 +38,5 @@ p#paragraph.aah.bbbb {
 
     let styled = style::style_node(&root, &stylesheet);
 
-    println!("{:#?}", styled);
+    let layout_box = layout::layout_node(&styled);
 }
