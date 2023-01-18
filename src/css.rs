@@ -24,14 +24,14 @@ pub struct Declaration {
     pub value: CSSValue,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum CSSValue {
     Keyword(String),
     Length(f32, CSSUnit),
     Color { r: u8, g: u8, b: u8, a: u8 },
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum CSSUnit {
     Px,
 }
@@ -51,6 +51,15 @@ impl SimpleSelector {
         let c = self.tag_name.iter().count();
 
         (a, b, c)
+    }
+}
+
+impl CSSValue {
+    pub fn to_px(&self) -> f32 {
+        match self {
+            &CSSValue::Length(length, CSSUnit::Px) => length,
+            _ => 0.0
+        }
     }
 }
 

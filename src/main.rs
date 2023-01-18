@@ -1,36 +1,18 @@
-use toy_browser::{css, html, style, layout};
+use toy_browser::{css, html, layout::{self, BoxDimensions, Rect}, style};
 
 fn main() {
-    let root = html::parse(
-        "<html>
-    <head>
-        <title>EU SEIIIIIIIIIIIIIII</title>
-    </head>
-    <body>
-        <p id=\"paragraph\" class=\"ff aah bbbb\">OLA A</p>
-    </body>
-</html>"
-        .to_owned(),
-    );
+    let root = html::parse("<a><b></b></a>".to_owned());
 
     let stylesheet = css::parse(
         "
-head, title {
-    display: none;
-}
-
-body {
-    width: 500px;
-    height: 500px;
+a {
+    width: 50px;
     display: block;
 }
 
-p#paragraph.aah.bbbb {
-    propriedade: aaaaaaaaaaaaaaaaaaaaaa;
-}
-
-#paragraph.aah.bbbb {
-    propriedade: OLA;
+b {
+    height: 30px;
+    display: block;
 }
 "
         .to_owned(),
@@ -38,5 +20,14 @@ p#paragraph.aah.bbbb {
 
     let styled = style::style_node(&root, &stylesheet);
 
-    let layout_box = layout::layout_node(&styled);
+    let layout_box = layout::layout_node(&styled, BoxDimensions {
+        content: Rect {
+            width: 100.0,
+            height: 50.0,
+            ..Default::default()
+        },
+        ..Default::default()
+    });
+
+    println!("{:#?}", layout_box);
 }

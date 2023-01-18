@@ -13,6 +13,21 @@ pub struct StyledNode<'a> {
     pub children: Vec<StyledNode<'a>>,
 }
 
+impl<'a> StyledNode<'a> {
+    pub fn lookup_property_value<'b, P>(&'a self, properties: P, default: &'a CSSValue) -> &'a CSSValue
+    where
+        P: IntoIterator<Item = &'b str>,
+    {
+        for property in properties.into_iter() {
+            if let Some(value) = self.specified_properties.get(property) {
+                return value;
+            }
+        }
+
+        default
+    }
+}
+
 pub fn style_node<'a>(node: &'a Node, stylesheet: &'a Stylesheet) -> StyledNode<'a> {
     match node {
         Node::Text(_) => StyledNode {
