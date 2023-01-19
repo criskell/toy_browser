@@ -25,10 +25,18 @@ pub struct Declaration {
 }
 
 #[derive(Debug, Clone, PartialEq)]
+pub struct Color {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub a: u8,
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub enum CSSValue {
     Keyword(String),
     Length(f32, CSSUnit),
-    Color { r: u8, g: u8, b: u8, a: u8 },
+    Color(Color),
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -196,7 +204,7 @@ impl Parser {
         let b = self.consume_hex_value();
         let a = self.consume_hex_value();
 
-        CSSValue::Color { r, g, b, a }
+        CSSValue::Color(Color { r, g, b, a })
     }
 
     fn consume_hex_value(&mut self) -> u8 {
